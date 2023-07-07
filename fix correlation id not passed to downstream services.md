@@ -34,28 +34,9 @@ public HttpTracing create(Tracing tracing) {
 Add `TracingClientHttpRequestInterceptor`
 ```java
 @Bean
-@Primary
 public RestTemplate restTemplate(HttpTracing httpTracing) {
-
-    final PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
-    connectionManager.setDefaultConnectionConfig(
-            ConnectionConfig.custom()
-                    .setConnectTimeout(Timeout.ofSeconds(20))
-                    .setSocketTimeout(Timeout.ofSeconds(60))
-                    .build()
-    );
-
-    final CloseableHttpClient httpClient = HttpClientBuilder.create()
-            .setConnectionManager(connectionManager)
-            .build();
-
-    return new RestTemplateBuilder()
-            .requestFactory(() -> new HttpComponentsClientHttpRequestFactory(httpClient))
-            .messageConverters(new StringHttpMessageConverter(), new MappingJackson2HttpMessageConverter())
-            .interceptors(List.of(
-                    TracingClientHttpRequestInterceptor.create(httpTracing)
-            ))
-            .errorHandler(new RestTemplateErrorHandler())
-            .build();
+    return new RestTemplateBuilder()           
+            .interceptors(TracingClientHttpRequestInterceptor.create(httpTracing))
+        .build();
 }
 ```
