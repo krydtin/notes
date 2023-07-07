@@ -1,6 +1,7 @@
 ### Correlation id 
 Fix trace ID and span ID are not passed to downstream services when making API calls using RestTemplate.
 
+
 #### Add the library
 **pom.xml**
 add `brave-instrumentation-spring-web`
@@ -20,7 +21,7 @@ import brave.http.HttpTracing;
 import brave.spring.web.TracingClientHttpRequestInterceptor;
 ```
 
-Add `httpTracing` to the top of the Java class.
+Add `httpTracing`
 ```java
 @Bean
 public HttpTracing create(Tracing tracing) {
@@ -30,7 +31,7 @@ public HttpTracing create(Tracing tracing) {
 }
 ```
 
-Add TracingClientHttpRequestInterceptor
+Add `TracingClientHttpRequestInterceptor`
 ```java
 @Bean
 @Primary
